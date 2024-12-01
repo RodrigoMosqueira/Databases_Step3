@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="insert-header">
+  <h1>Insert Data Into a Table</h1>
+</div>
+<div class="inserts">
+  {% for insert in inserts %}
+  <div class="insert">
+    <form action="/insert/{{ loop.index }}" method="POST" class="insert-wrapper">
+      <div>
+        <h3>{{ insert[0] }}</h3>
+        <div class="insert-form">
+          {% for input in insert[1] %}
+          <div class="insert-input">
+            <label for="{{ input }}">{{ input }}:</label>
+            <input id="{{ input }}" name="{{ input }}">
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="insert-buttons">
+        <button type="submit">Insert</button>
+        <a href="/query/{{ 20 + loop.index }}"><button type="button">Show</button></a>
+      </div>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

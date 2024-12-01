@@ -1,0 +1,23 @@
+<head>
+  <title>{% block title %}OlympicDB{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <div class="header">
+    <div class="info">
+      <img src="{{ url_for('static', filename='logo.png') }}" class="logo" />
+      <div>
+        <h3>OlympicDB</h3>
+        <p>Explore the Paris 2024 Olympics</p>
+      </div>
+    </div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/query">Queries</a>
+      <a href="/insert">Insert</a>
+    </div>
+  </div>
+  {% block content %}
+  {% endblock %}
+</body>

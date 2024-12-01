@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="queries-header">
+  <h1>Select a Query to Execute</h1>
+</div>
+<div class="queries">
+  {% for query in queries %}
+  <div class="query">
+    <form action="/query/{{ loop.index }}">
+      <h3>{{ query[0] }}</h3>
+      <p>{{ "____".join(query[1]) }}</p>
+      <div class="form">
+        {% for input in query[2] %}
+        <div>
+          <label for="{{ input }}">{{ input }}:</label>
+          <input id="{{ input }}" name="{{ input }}">
+        </div>
+        {% endfor %}
+        <button type="submit">Execute</button>
+      </div>
+    </form>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

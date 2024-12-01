@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Query Results{% endblock %}
+
+{% block content %}
+
+<div class="query-header">
+  <h1>{{ queries[query_id - 1][0] }}</h1>
+  <span>{{ query }}</span>
+  {% if flag %}
+  <span>Please provide inputs before executing the query!</span>
+  {% endif %}
+</div>
+{% if not flag %}
+<div class="results">
+  <table>
+    <tr>
+      {% for column in result[0] %}
+      <th>{{ column }}</th>
+      {% endfor %}
+    </tr>
+    {% for row in result[1:] %}
+    <tr>
+      {% for value in row %}
+      <td>{{ value }}</td>
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+{% endblock %}

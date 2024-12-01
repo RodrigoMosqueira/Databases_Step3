@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="home">
+  <div class="home-card">
+    <div class="home-header">
+      <h1>Welcome to OlympicDB!</h1>
+    </div>
+    <p>
+      OlympicDB is an interactive database designed for the Paris 2024 Summer Olympic Games.
+      It aggregates data for the Athletes, Countries, Events, Venues, Coaches, and Officials
+      who participated in the Olympics as well as their various relationships.
+      Users can execute queries to answer common questions related to the Olympics
+      and also insert their own data into the database.
+    </p>
+    <b>Navigation</b>
+    <ul>
+      <li><a href="/">Home</a> - Learn About OlympicDB</li>
+      <li><a href="/query">Queries</a> - Execute Queries</li>
+      <li><a href="/insert">Insert</a> - Insert Your Own Data</li>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}

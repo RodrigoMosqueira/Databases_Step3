@@ -1,0 +1,175 @@
+body {
+  background-color: #D4EBF8;
+  color: #0A3981;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 0 10px;
+  color: #1F509A;
+}
+
+.info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.logo {
+  height: 80px;
+}
+
+.links {
+  display: flex;
+  gap: 30px;
+}
+
+a {
+  color: inherit;
+}
+
+.home-header {
+  text-align: center;
+}
+
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url("hero2.avif");
+  height: 650px;
+  background-size: cover;
+  border-radius: 4px;
+  justify-content: center;
+}
+
+.home-card {
+  background-color: rgb(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 10px;
+  padding-top: 10px;
+  width: 40%;
+}
+
+.queries-header {
+  text-align: center;
+}
+
+.queries {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.query {
+  border: solid 1px #0A3981;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: white;
+  width: 40%;
+}
+
+.form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+button {
+  color: inherit;
+  background-color: #D4EBF8;
+  border-radius: 4px;
+  padding: 4px 16px;
+  border: solid 2px #0A3981;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.query-header {
+  text-align: center;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table {
+  width: 75%;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+  margin-top: 40px;
+}
+
+th,
+td {
+  padding: 15px;
+  text-align: left;
+}
+
+th,
+td {
+  border-bottom: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #F2F2F2;
+}
+
+th {
+  background-color: #E38E49;
+}
+
+.insert-header {
+  text-align: center;
+}
+
+.inserts {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.insert {
+  border: solid 1px #0A3981;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: white;
+  width: 40%;
+}
+
+.insert-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.insert-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.insert-input {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.insert-buttons {
+  display: flex;
+  gap: 10px;
+  margin: 16px 0;
+}
