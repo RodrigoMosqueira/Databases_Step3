@@ -10,9 +10,9 @@
   <div class="query">
     <form action="/query/{{ loop.index }}">
       <h3>{{ query[0] }}</h3>
-      <p>{{ "____".join(query[1]) }}</p>
+      <p>{{ query[2] }}</p>
       <div class="form">
-        {% for input in query[2] %}
+        {% for input in query[1] %}
         <div>
           <label for="{{ input }}">{{ input }}:</label>
           <input id="{{ input }}" name="{{ input }}">
