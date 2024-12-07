@@ -39,7 +39,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("hero2.avif");
+  background-image: url("hero.avif");
   height: 650px;
   background-size: cover;
   border-radius: 4px;
@@ -172,4 +172,8 @@ th {
   display: flex;
   gap: 10px;
   margin: 16px 0;
+}
+
+.error-header {
+  text-align: center;
 }

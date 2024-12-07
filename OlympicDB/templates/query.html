@@ -7,11 +7,7 @@
 <div class="query-header">
   <h1>{{ queries[query_id - 1][0] }}</h1>
   <span>{{ query }}</span>
-  {% if flag %}
-  <span>There was an error while executing your query. Please try again.</span>
-  {% endif %}
 </div>
-{% if not flag %}
 <div class="results">
   <table>
     <tr>
@@ -28,6 +24,5 @@
     {% endfor %}
   </table>
 </div>
-{% endif %}
 
 {% endblock %}
