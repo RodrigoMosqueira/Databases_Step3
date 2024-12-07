@@ -394,4 +394,60 @@ queries = [
     "All Countries",
     [],
     """
-    Display all Countrie
+    Display all Countries
+    """,
+    """
+    SELECT *
+    FROM Countries;
+    """,
+    False,
+  ),
+  (
+    "All Coaches",
+    [],
+    """
+    Display all Coaches
+    """,
+    """
+    SELECT *
+    FROM Coaches;
+    """,
+    False,
+  ),
+  (
+    "All Venues",
+    [],
+    """
+    Display all Venues
+    """,
+    """
+    SELECT *
+    FROM Venues;
+    """,
+    False,
+  ),
+  (
+    "All Events",
+    [],
+    """
+    Display all Events
+    """,
+    """
+    SELECT *
+    FROM Events;
+    """,
+    False,
+  ),
+  (
+    "All Officials",
+    [],
+    """
+    Display all Officials
+    """,
+    """
+    SELECT *
+    FROM Officials;
+    """,
+    False,
+  ),
+]

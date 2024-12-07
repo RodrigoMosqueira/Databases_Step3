@@ -75,4 +75,18 @@ def insert_data(insert_id):
   for column in columns:
     if column not in request.form or not request.form[column]:
       error = "Please make sure to provide values for all inputs."
-      return render_temp
+      return render_template("error.html", error=error)
+    values.append(request.form[column])
+  values = tuple(values)
+  
+  placeholders = ["%s" for _ in range(len(values))]
+  query += "(" + ", ".join(placeholders) + ")"
+
+  try:
+    cursorObject.execute(query, values)
+    myConnection.commit()
+  except:
+    error = "There was an error while running the insert. Please make sure your inputs look OK."
+    return render_template("error.html", error=error)
+
+  return redirect(f"/query/{20 + insert_id}")
