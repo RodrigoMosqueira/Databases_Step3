@@ -129,7 +129,8 @@ queries = [
     Display the Events in ascending order of their dates.
     """,
     """
-    SELECT E.Name, E.Date FROM Events AS E
+    SELECT E.Name, E.Date
+    FROM Events AS E
     INNER JOIN Compete AS Com ON E.EventID = Com.EventID
     INNER JOIN Athletes AS A ON Com.AthleteID = A.AthleteID
     INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
@@ -363,7 +364,7 @@ queries = [
     """
     SELECT {}
     FROM Athletes
-    WHERE EducationLevel IN (\"Undergraduate", \"Postgraduate\");
+    WHERE EducationLevel IN (\"Undergraduate\", \"Postgraduate\");
     """,
     True,
   ),
@@ -387,7 +388,7 @@ queries = [
     "First-Time Coach",
     [],
     """
-    List Countries - by country ID and name -
+    List distinct Countries - by country ID and name -
     who have a Coach that is coaching an event for the first time
     but do not have an Official that is officiating for the first time.
     """,
