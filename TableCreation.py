@@ -1,7 +1,7 @@
 """
-Run this file to generate processed data.Be sure change the password in line 9.
+Run this file to generate processed data. Be sure change the password in line 16.
 This will output processed data in .csv file starting with the file name 
-'gnerated_'. The data will also be automatically inserted into mysql
+'generated_'. The data will also be automatically inserted into mysql.
 """
 
 
@@ -729,7 +729,7 @@ def generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
     random.shuffle(athlete_ids)
     random.shuffle(event_ids)
 
-    # Assign at least two athletes to each event
+    # Assign at least eight athletes to each event
     for event_id in event_ids:
         assigned_athletes = random.sample(athlete_ids, min(8, len(athlete_ids)))
         for i, athlete_id in enumerate(assigned_athletes):
@@ -780,8 +780,4 @@ def generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
     myConnection.commit()
     print("Data inserted into the Compete table.")
 
-athletes_file = 'Data/Paris2024/generated_athletes_with_country_id.csv'
-events_file = 'Data/Paris2024/generated_events.csv'
-output_path = 'Data/Paris2024/generated_compete.csv'
-
-generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
+athletes_file = 'Data/Paris2024/generated_athletes_with_country_id.
