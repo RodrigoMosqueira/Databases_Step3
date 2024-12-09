@@ -2,27 +2,36 @@
 inserts = [
   (
     "Athletes",
-    ["AthleteID", "Name", "Gender", "Height", "Weight", "DateOfBirth", "EducationLevel", "CountryID"],
+    [
+      ("AthleteID", int),
+      ("Name", str),
+      ("Gender", str),
+      ("Height", float),
+      ("Weight", float),
+      ("DateOfBirth", str),
+      ("EducationLevel", str),
+      ("CountryID", int),
+    ],
   ),
   (
     "Countries",
-    ["CountryID", "Name", "Population"],
+    [("CountryID", int), ("Name", str), ("Population", int)],
   ),
   (
     "Coaches",
-    ["CoachID", "Name", "Gender", "Type", "YearsOfExperience", "CountryID"],
+    [("CoachID", int), ("Name", str), ("Gender", str), ("Type", str), ("YearsOfExperience", int), ("CountryID", int)],
   ),
   (
     "Venues",
-    ["VenueID", "Name", "Capacity", "City"],
+    [("VenueID", int), ("Name", str), ("Capacity", int), ("City", str)],
   ),
   (
     "Events",
-    ["EventID", "Name", "StartTime", "EndTime", "Date", "VenueID"],
+    [("EventID", int), ("Name", str), ("StartTime", str), ("EndTime", str), ("Date", str), ("VenueID", int)],
   ),
   (
     "Officials",
-    ["OfficialID", "Name", "Gender", "Type", "YearsOfExperience", "CountryID"],
+    [("OfficialID", int), ("Name", str), ("Gender", str), ("Type", str), ("YearsOfExperience", int), ("CountryID", int)],
   ),
 ]
 
@@ -30,7 +39,8 @@ queries = [
   (
     "Medal Count (Countries)",
     [],
-    """List Countries - by name and count of Medals.
+    """
+    List Countries - by name and count of Medals.
     Display the Countries in descending order of their count of Medals.
     """,
     """
@@ -38,7 +48,7 @@ queries = [
     FROM Countries AS Cou
     INNER JOIN Athletes AS A ON Cou.CountryID = A.CountryID
     INNER JOIN Compete AS Com ON A.AthleteID = Com.AthleteID
-    WHERE Com.Result >= 3
+    WHERE Com.Result IN (\"Gold\", \"Silver\", \"Bronze\")
     GROUP BY Cou.CountryID
     ORDER BY COUNT(DISTINCT Com.EventID) DESC;
     """,
@@ -56,7 +66,7 @@ queries = [
     SELECT A.Name, COUNT(C.EventID) AS CountOfMedals
     FROM Athletes AS A
     INNER JOIN Compete AS C ON A.AthleteID = C.AthleteID
-    WHERE C.Result >= 3
+    WHERE C.Result IN (\"Gold\", \"Silver\", \"Bronze\")
     GROUP BY A.AthleteID
     ORDER BY COUNT(C.EventID) DESC
     LIMIT 10;
@@ -65,7 +75,7 @@ queries = [
   ),
   (
     "Athletes Born After Year",
-    ["Year", "Country"],
+    [("Year", int), ("Country", str)],
     """
     List Athletes - by name and Event name - born after {} (included) representing the Country {}.
     """,
@@ -81,7 +91,7 @@ queries = [
   ),
   (
     "Gold Medal Athletes Born Before Year",
-    ["Year", "Country"],
+    [("Year", int), ("Country", str)],
     """
     List distinct Athletes - by name, date of birth, and Country name -
     who won gold Medals and were born before {} (excluded) representing the Country {}.
@@ -91,8 +101,7 @@ queries = [
     FROM Athletes AS A
     INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
     INNER JOIN Compete AS Com ON A.AthleteID = Com.AthleteID
-    INNER JOIN Events AS E ON Com.EventID = E.EventID
-    WHERE Com.Result = 1 AND YEAR(A.DateOfBirth) < %s AND Cou.Name = %s;
+    WHERE Com.Result = \"Gold\" AND YEAR(A.DateOfBirth) < %s AND Cou.Name = %s;
     """,
     False,
   ),
@@ -108,13 +117,13 @@ queries = [
     INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
     INNER JOIN Compete AS COM ON A.AthleteID = Com.AthleteID
     INNER JOIN Events AS E ON Com.EventID = E.EventID
-    WHERE Com.Result = 1;
+    WHERE Com.Result = \"Gold\";
     """,
     False,
   ),
   (
     "Event Dates",
-    ["Country"],
+    [("Country", str)],
     """
     List Events - by name and date - in which Athletes representing the Country {} participated in.
     Display the Events in ascending order of their dates.
@@ -138,7 +147,7 @@ queries = [
     order of the average years of experience of Officials.
     """,
     """
-    SELECT C.Name, COUNT(O.OfficialID) AS CountOfOfficials, AVG(O.YearsOfExperience) AS AverageYearsOfExperienceOfOfficials
+    SELECT C.Name, COUNT(O.OfficialID) AS CountOfOfficials, AVG(O.YearsOfExperience) AS AverageYearsOfExperience
     FROM Countries AS C
     INNER JOIN Officials AS O ON C.CountryID = O.CountryID
     GROUP BY C.CountryID
@@ -149,7 +158,7 @@ queries = [
   ),
   (
     "Host Venues",
-    ["Event"],
+    [("Event", str)],
     """
     List Venues - by name and city - that hosted the Event {}.
     """,
@@ -163,7 +172,7 @@ queries = [
   ),
   (
     "Above-Average Height",
-    ["Country"],
+    [("Country", str)],
     """
     List Athletes with height greater than the average height of Athletes representing the Country {}.
     """,
@@ -207,7 +216,7 @@ queries = [
   ),
   (
     "Experienced Coaches",
-    ["Years"],
+    [("Years", int)],
     """
     List Coaches - by name, years of experience, and Country name -
     who have more than {} (included) years of experience.
@@ -223,27 +232,36 @@ queries = [
     False,
   ),
   (
-    "Events in Large Venues",
+    "Only Large Venues",
     [],
     """
-    List Events - by name and Venue name -
-    that were hosted by Venues with a capacity between 20,000 (included) and 30,000 (included).
+    List Athletes - by name, gender, and Country name -
+    that competed in Events that were hosted by Venues with a capacity of 50,000 (included) or more
+    but did not compete in Events that were hosted by Venues with a capacity of 20,000 (included) or less.
     """,
     """
-    SELECT E.Name AS EventName, V.Name AS VenueName
-    FROM Events AS E
+    SELECT A.Name AS AthleteName, A.Gender, Cou.Name AS CountryName
+    FROM Athletes AS A
+    INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
+    INNER JOIN Compete AS Com ON A.AthleteID = Com.AthleteID
+    INNER JOIN Events AS E ON Com.EventID = E.EventID
     INNER JOIN Venues AS V ON E.VenueID = V.VenueID
-    WHERE V.Capacity >= 20000 AND V.Capacity <= 30000;
+    WHERE V.Capacity >= 50000 AND A.AthleteID NOT IN (
+      SELECT C.AthleteID
+      FROM Compete AS C
+      INNER JOIN Events AS E ON C.EventID = E.EventID
+      INNER JOIN Venues AS V ON E.VenueID = V.VenueID
+      WHERE V.Capacity <= 20000
+    );
     """,
     False,
   ),
   (
-    "First and Last Day",
+    "July and August",
     [],
     """
-    List Athletes - by athleteID and name -
-    that competed in Events held on the first day of the Olympics (July 26)
-    and the last day of the Olympics (August 11).
+    List Athletes - by athlete ID and name -
+    that competed in an Event held in July and an Event held in August.
     """,
     """
     (
@@ -251,29 +269,35 @@ queries = [
       FROM Athletes AS A
       INNER JOIN Compete AS C ON A.AthleteID = C.AthleteID
       INNER JOIN Events AS E ON C.EventID = E.EventID
-      WHERE E.Date = 2024-07-26
+      WHERE MONTH(E.Date) = 7
     ) INTERSECT (
       SELECT A.AthleteID, A.Name
       FROM Athletes AS A
       INNER JOIN Compete AS C ON A.AthleteID = C.AthleteID
       INNER JOIN Events AS E ON C.EventID = E.EventID
-      WHERE E.Date = 2024-08-11
+      WHERE MONTH(E.Date) = 8
     );
     """,
     False,
   ),
   (
-    "Country Medalists",
-    ["Country"],
+    "More Official Experience",
+    [("Country", str)],
     """
-    List Athletes - by name, gender, and education level - representing the Country {} who won a Medal.
+    List Officials - by name, kind, years of experience, and Country name -
+    who have more years of experience than the Official from the Country {}
+    with the most years of experience (excluded).
     """,
     """
-    SELECT A.Name, A.Gender, A.EducationLevel
-    FROM Athletes AS A
-    INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
-    INNER JOIN Compete AS Com ON A.AthleteID = Com.AthleteID
-    WHERE Com.Result >= 3 AND Cou.Name = %s;
+    SELECT O.Name AS OfficialName, O.Kind, O.YearsOfExperience, C.Name AS CountryName
+    FROM Officials AS O
+    INNER JOIN Countries AS C On O.CountryID = C.CountryID
+    WHERE O.YearsOfExperience > (
+      SELECT MAX(O.YearsOfExperience)
+      FROM Officials AS O
+      INNER JOIN Countries AS C ON O.CountryID = C.CountryID
+      WHERE C.Name = %s
+    );
     """,
     False,
   ),
@@ -289,17 +313,17 @@ queries = [
     FROM Athletes AS A
     INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
     INNER JOIN Compete AS Com ON A.AthleteID = Com.AthleteID
-    WHERE Com.Result = 1 AND A.AthleteID NOT IN (
+    WHERE Com.Result = \"Gold\" AND A.AthleteID NOT IN (
       SELECT AthleteID
       FROM Compete
-      WHERE Result IN (2, 3)
+      WHERE Result IN (\"Silver\", \"Bronze\")
     );
     """,
     False,
   ),
   (
     "A Lot of Athletes",
-    ["Athletes"],
+    [("Athletes", int)],
     """
     List Countries - by name, population, and number of Athletes representing them.
     Only display Countries with at least {} (included) Athletes representing them.
@@ -317,26 +341,29 @@ queries = [
     "Outside Paris",
     [],
     """
-    List Events - by name, Venue name, and Venue city -
-    that were held in Venues located in cities that aren’t Paris.
+    List Venues - by name, city, and count of Events hosted -
+    located in cities that aren’t Paris. Display the venues in descending order of their count of Events hosted.
     """,
     """
-    SELECT E.Name AS EventName, V.Name AS VenueName, V.City
-    FROM Events AS E
-    INNER JOIN Venues AS V ON E.VenueID = V.VenueID
-    WHERE V.City != \"Paris\";
+    SELECT V.Name, V.City, COUNT(E.EventID) AS CountOfEvents
+    FROM Venues AS V
+    INNER JOIN Events AS E ON V.VenueID = E.VenueID
+    WHERE V.City != \"Paris\"
+    GROUP BY V.VenueID
+    ORDER BY COUNT(E.EventID) DESC;
     """,
     False,
   ),
   (
-    "Athlete Attributes",
-    ["Attributes"],
+    "Educated Athlete Attributes",
+    [("Attributes", str)],
     """
-    List Athletes - by {}.
+    List Athletes - by {} - whose education level is Undergraduate or Postgraduate.
     """,
     """
     SELECT {}
-    FROM Athletes;
+    FROM Athletes
+    WHERE EducationLevel IN (\"Undergraduate", \"Postgraduate\");
     """,
     True,
   ),
@@ -345,14 +372,14 @@ queries = [
     [],
     """
     List Athletes - by name and Country name -
-    who represented the Countries USA, Mexico, or Canada and won a Medal.
+    who represented the Countries United States, Mexico, or Canada and won a Medal.
     """,
     """
     SELECT A.Name AS AthleteName, Cou.Name AS CountryName
     FROM Athletes AS A
     INNER JOIN Countries AS Cou ON A.CountryID = Cou.CountryID
     INNER JOIN Compete AS Com ON A.AthleteID = Com.AthleteID
-    WHERE Cou.Name IN (\"USA\", \"Mexico\", \"Canada\") AND Com.Result >= 3;
+    WHERE Cou.Name IN (\"United States\", \"Mexico\", \"Canada\") AND Com.Result IN (\"Gold\", \"Silver\", \"Bronze\");
     """,
     False,
   ),
@@ -360,12 +387,12 @@ queries = [
     "First-Time Coach",
     [],
     """
-    List Countries - by ID and name -
+    List Countries - by country ID and name -
     who have a Coach that is coaching an event for the first time
     but do not have an Official that is officiating for the first time.
     """,
     """
-    SELECT Countries.CountryID, Countries.Name
+    SELECT DISTINCT Countries.CountryID, Countries.Name
     FROM Countries
     INNER JOIN Coaches ON Countries.CountryID = Coaches.CountryID
     INNER JOIN Coach ON Coaches.CoachID = Coach.CoachID
@@ -382,7 +409,7 @@ queries = [
     "All Athletes",
     [],
     """
-    Display all Athletes
+    Display all Athletes.
     """,
     """
     SELECT *
@@ -394,7 +421,7 @@ queries = [
     "All Countries",
     [],
     """
-    Display all Countries
+    Display all Countries.
     """,
     """
     SELECT *
@@ -406,7 +433,7 @@ queries = [
     "All Coaches",
     [],
     """
-    Display all Coaches
+    Display all Coaches.
     """,
     """
     SELECT *
@@ -418,7 +445,7 @@ queries = [
     "All Venues",
     [],
     """
-    Display all Venues
+    Display all Venues.
     """,
     """
     SELECT *
@@ -430,7 +457,7 @@ queries = [
     "All Events",
     [],
     """
-    Display all Events
+    Display all Events.
     """,
     """
     SELECT *
@@ -442,7 +469,7 @@ queries = [
     "All Officials",
     [],
     """
-    Display all Officials
+    Display all Officials.
     """,
     """
     SELECT *

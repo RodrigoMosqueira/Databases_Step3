@@ -225,8 +225,8 @@ def process_and_insert_athletes(file_path):
             # athlete_id = int(row.get("code", random.randint(1000, 9999)))  # Use 'code' for AthleteID
             name = row.get("name", "Unknown").strip()  # Default to "Unknown" if missing
             gender = row.get("gender", random.choice(["Male", "Female"]))
-            height = float(row.get("height", random.uniform(150.0, 200.0))) if row.get("height") else None
-            weight = float(row.get("weight", random.uniform(50.0, 100.0))) if row.get("weight") else None
+            height = float(row.get("height")) if row.get("height") and float(row.get("height")) else random.uniform(150.0, 200.0)
+            weight = float(row.get("weight")) if row.get("weight") and float(row.get("weight")) else random.uniform(50.0, 100.0)
 
             # Generate random Date of Birth if missing
             dob = row.get("birth_date")
@@ -424,8 +424,8 @@ def generate_coach_data(coaches_file, countries_file, cursor):
         years_of_experience = generate_years_of_experience()
 
         # Assign a random CountryID (if country information is missing)
-        random_country = random.choice(list(country_dict.values()))
-        country_id = random_country
+        country = row.get("country", "").strip()
+        country_id = country_dict.get(country, random.choice(list(country_dict.values())))
 
         coach_data.append({
             "CoachID": coach_id,
@@ -523,12 +523,12 @@ def generate_coaching_event_data(events_file, coaches_file, output_path, cursor)
         num_coaches = random.randint(1, 6)  # Randomly assign between 1 and 6 coaches
         assigned_coaches = []
         
-        while event_coach_count[event_id] < num_coaches:
+        for _ in range(num_coaches):
             # Randomly select a coach who has been assigned to less than 6 events and this event has space
             available_coaches = [coach_id for coach_id in coach_ids if coach_event_count[coach_id] < 6 and event_coach_count[event_id] < 6]
             
             if not available_coaches:
-                break  # Exit if no available coaches
+                continue  # Exit if no available coaches
 
             selected_coach = random.choice(available_coaches)
             if (event_id, selected_coach) not in existing_combinations_set:
@@ -731,9 +731,16 @@ def generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
 
     # Assign at least two athletes to each event
     for event_id in event_ids:
-        assigned_athletes = random.sample(athlete_ids, min(2, len(athlete_ids)))
-        for athlete_id in assigned_athletes:
-            result = random.choice(["Gold", "Silver", "Bronze", "No medals"])
+        assigned_athletes = random.sample(athlete_ids, min(8, len(athlete_ids)))
+        for i, athlete_id in enumerate(assigned_athletes):
+            if i == 0:
+                result = "Gold"
+            elif i == 1:
+                result = "Silver"
+            elif i == 2:
+                result = "Bronze"
+            else:
+                result = "No Medal"
             athlete_event_data.append({
                 "EventID": event_id,
                 "AthleteID": athlete_id,
@@ -744,7 +751,7 @@ def generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
     for athlete_id in athlete_ids:
         if not any(ae["AthleteID"] == athlete_id for ae in athlete_event_data):
             event_id = random.choice(event_ids)
-            result = random.choice(["Gold", "Silver", "Bronze", "No medals"])
+            result = "No Medal"
             athlete_event_data.append({
                 "EventID": event_id,
                 "AthleteID": athlete_id,

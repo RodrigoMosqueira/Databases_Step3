@@ -14,8 +14,8 @@
       <div class="form">
         {% for input in query[1] %}
         <div>
-          <label for="{{ input }}">{{ input }}:</label>
-          <input id="{{ input }}" name="{{ input }}">
+          <label for="{{ input[0] }}">{{ input[0] }}:</label>
+          <input id="{{ input[0] }}" name="{{ input[0] }}">
         </div>
         {% endfor %}
         <button type="submit">Execute</button>

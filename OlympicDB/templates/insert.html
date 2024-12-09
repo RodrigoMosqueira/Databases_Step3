@@ -14,8 +14,8 @@
         <div class="insert-form">
           {% for input in insert[1] %}
           <div class="insert-input">
-            <label for="{{ input }}">{{ input }}:</label>
-            <input id="{{ input }}" name="{{ input }}">
+            <label for="{{ input[0] }}">{{ input[0] }}:</label>
+            <input id="{{ input[0] }}" name="{{ input[0] }}">
           </div>
           {% endfor %}
         </div>
