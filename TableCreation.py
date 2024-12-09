@@ -780,4 +780,8 @@ def generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
     myConnection.commit()
     print("Data inserted into the Compete table.")
 
-athletes_file = 'Data/Paris2024/generated_athletes_with_country_id.
+athletes_file = 'Data/Paris2024/generated_athletes_with_country_id.csv'
+events_file = 'Data/Paris2024/generated_events.csv'
+output_path = 'Data/Paris2024/generated_compete.csv'
+
+generate_athlete_event_data(athletes_file, events_file, output_path, cursor)
