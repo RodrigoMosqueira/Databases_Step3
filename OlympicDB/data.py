@@ -109,7 +109,7 @@ queries = [
     "Gold Medal Athletes",
     [],
     """
-    List Athletes - by name, Country name, and Event name - who won at least one gold Medal.
+    List Athletes - by name, Country name, and Event name - who won a gold Medal.
     """,
     """
     SELECT A.Name AS AthleteName, Cou.Name AS CountryName, E.Name AS EventName
@@ -372,7 +372,7 @@ queries = [
     [],
     """
     List Athletes - by name and Country name -
-    who represented the Countries United States, Mexico, or Canada and won a Medal.
+    who represented the Country United States, Mexico, or Canada and won a Medal.
     """,
     """
     SELECT A.Name AS AthleteName, Cou.Name AS CountryName
