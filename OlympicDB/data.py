@@ -390,7 +390,7 @@ queries = [
     """
     List distinct Countries - by country ID and name -
     who have a Coach that is coaching an event for the first time
-    but do not have an Official that is officiating for the first time.
+    but do not have an Official that is officiating an event for the first time.
     """,
     """
     SELECT DISTINCT Countries.CountryID, Countries.Name
